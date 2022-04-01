@@ -38,7 +38,7 @@ public class DistributeLockAspect {
         log.info("分布式锁-环绕通知-执行前：{}, 入参：{}", joinPoint.getClass().getSimpleName(), Arrays.toString(joinPoint.getArgs()));
         // TODO 解析key
         String key = distributeLock.key();
-        String keyValue = lock(key, 20, TimeUnit.SECONDS);
+        String keyValue = lock(key, distributeLock.timeout(), distributeLock.timeUnit());
         if (StringUtil.isNullOrEmpty(keyValue)) {
             log.info("分布式锁-环绕通知-获取锁失败");
             return null;
