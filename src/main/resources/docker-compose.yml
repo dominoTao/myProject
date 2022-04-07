@@ -1,14 +1,33 @@
 version: "3.9"
+networks:
+  es :
 volumes:
+  plugin:
   data:
   config:
-  plugin:
-networks:
-  es:
 services:
+  redis:
+    image: redis:latest
+    container_name: myredis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+      - ./redis.config:/etc/redis/redis.conf
+    networks:
+      - "es"
+    command: redis-server /etc/redis/redis.conf
+    restart: "no"
+  myapp:
+    image: myapp:0.1
+    container_name: myapp
+    ports:
+      - "8080:8080"
+    networks:
+      - "es"
   elasticsearch:
-    image: elasticsearch:8.1.1
-#	container_name: myes
+    image: elasticsearch:7.2.0
+    container_name: myes
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -19,28 +38,19 @@ services:
     volumes:
       - data:/usr/share/elasticsearch/data
       - config:/usr/share/elasticsearch/config
-      - plugin:/usr/share/elasticsearch/plugins
+      - plugin:/usr/share/elasticsearch/plugin
 
-  kibana:
-    image: kibana:8.1.1
-#	container_name: mykibana
+  mysql:
+    image: mysql:8.0.28
     ports:
-      - "5601:5601"
+      - "3306:3306"
     networks:
       - "es"
+    container_name: mymysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=S3cret"
+      - "MYSQL_PASSWORD=An0thrS3crt"
+      - "MYSQL_USER=citizix_user"
+      - "MYSQL_DATABASE=citizix_db"
     volumes:
-      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
-
-  redis:
-    image: redis:latest
-#	container_name: myredis
-#	restart: "no"
-    ports:
-      - "6379:6379"
-    networks:
-      - "es"
-    volumes:
-      - ./redis.conf:/etc/redis/redis.conf
-      - ./redis_data:/data
-    command: redis-server /etc/redis/redis.conf
-    privileged: true
+      - ./mysql-data:/var/lib/mysql

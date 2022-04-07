@@ -14,7 +14,7 @@ public class JWTTest {
     // 签名
     private static final String SIGNATURE = "admin";
 
-    @Test
+//    @Test
     public void jwt(){
         JwtBuilder jwtBuilder = Jwts.builder();
         final String jwtToken = jwtBuilder
@@ -34,7 +34,7 @@ public class JWTTest {
 //eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTY0ODkwNzA4MCwic3ViIjoiand0LXRlc3QiLCJqdGkiOiI5NWUxYzYyYi1jZDA1LTRlNTEtOTk5YS01NGZkODdhYmYxNzMifQ.ZMvLoSQ2REijU11e-7ZvARZ6Plp34PHAKRlBwIm-AMo
     }
 
-    @Test
+//    @Test
     public void parse(){
         final String jwtToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTY0ODkwNzA4MCwic3ViIjoiand0LXRlc3QiLCJqdGkiOiI5NWUxYzYyYi1jZDA1LTRlNTEtOTk5YS01NGZkODdhYmYxNzMifQ.ZMvLoSQ2REijU11e-7ZvARZ6Plp34PHAKRlBwIm-AMo";
         JwtParser jwtParser = Jwts.parser();
